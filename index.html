@@ -8,7 +8,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
-        /* (Весь остальной CSS остается без изменений) */
         :root {
             --color-text: #ffffff;
             --color-text-dark: #333;
@@ -64,7 +63,6 @@
             transition: height 0.4s ease;
         }
         
-        /* (Остальные стили...) */
         
         .wizard-step { display: none; }
         .wizard-step.active { display: block; }
@@ -72,7 +70,7 @@
         h4 { font-weight: 600; margin-bottom: 8px; }
         p { font-weight: 300; font-size: 1.1rem; line-height: 1.6; }
         
-        /* (Стили сканера, кнопок и т.д. остаются) */
+   
         .scanner-container { position: relative; width: 100%; max-width: 400px; margin: 20px auto; border-radius: 8px; overflow: hidden; border: 1px solid rgba(255, 255, 255, 0.3); }
         #video-feed { width: 100%; height: auto; display: block; }
         .reticle { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 20px; height: 20px; border: 2px solid var(--color-primary); border-radius: 50%; background: rgba(255, 255, 255, 0.3); box-shadow: 0 0 10px var(--color-primary); }
@@ -87,22 +85,20 @@
         .btn-secondary { background: rgba(255, 255, 255, 0.3); color: #fff; border: 1px solid rgba(255, 255, 255, 0.5); }
         .btn-secondary:hover { background: rgba(255, 255, 255, 0.5); }
         
-        /* --- ИЗМЕНЕНО: Стили для инфо-панели --- */
         .info-panel {
             background: rgba(0, 0, 0, 0.1);
             border-radius: 10px;
             padding: 16px;
             margin-top: 24px;
             text-align: left;
-            
-            /* Ваша идея в действии! */
-            opacity: 0.2; /* Прозрачный по умолчанию */
+        
+            opacity: 0.2; 
             transition: opacity 0.4s ease;
-            cursor: help; /* Подсказка "наведи меня" */
+            cursor: help; 
         }
         
         .info-panel:hover {
-            opacity: 1; /* Становится видимым при наведении */
+            opacity: 1; 
         }
         
         .info-panel p {
@@ -110,10 +106,7 @@
             line-height: 1.5;
             margin: 8px 0 0 0;
         }
-        /* ------------------------------------- */
 
-        
-        /* (Стили для результата остаются) */
         #result-screen h2 { color: #fff; }
         #result-type { font-size: 1.8rem; font-weight: 600; color: var(--color-primary); background: #fff; padding: 10px 20px; border-radius: 10px; margin: 16px 0; display: inline-block; color: var(--color-text-dark); }
         .palette { margin-top: 20px; }
@@ -138,7 +131,7 @@
 
             <div class="wizard-step active" data-step="0">
                 <h1>Анализатор Палитры</h1>
-                <p>Давайте найдем ваш идеальный цветотип с помощью камеры. Мы поможем вам проанализировать 3 точки: кожу, волосы и глаза.</p>
+                <p>Давайте вместе найдем ваш идеальный контраст! Камера поможет проанализировать три зоны — кожу, волосы и глаза..</p>
                 
                 <div class="button-group">
                     <button class="btn btn-primary" id="start-btn">Начать Анализ</button>
@@ -184,7 +177,7 @@
             
             <div class="wizard-step" data-step="3">
                 <h2>Ваш Результат!</h2>
-                <p>На основе анализа вашей кожи, волос и глаз, ваш цветотип:</p>
+                <p>На основе анализа вашей кожи, волос и глаз, ваш контраст:</p>
                 <div id="result-type">...Анализ...</div>
                 
                 <div class="palette">
@@ -209,9 +202,7 @@
 
 
     <script>
-        // ⚡ JavaScript: Логика Сканера и Мастера
-        
-        // --- 1. DOM Элементы ---
+ 
         const wizardContainer = document.getElementById('wizard-container');
         const allSteps = document.querySelectorAll('.wizard-step');
         const startBtn = document.getElementById('start-btn');
@@ -230,13 +221,9 @@
         const stepTitle = document.getElementById('step-title');
         const stepInstruction = document.getElementById('step-instruction');
         
-        // --- ИЗМЕНЕНО: DOM для Инфо-блоков ---
-        // const infoToggleBtn = document.getElementById('info-toggle-btn'); // УДАЛЕНО
         const infoPanel = document.getElementById('info-panel');
         const resultPsychologyEl = document.getElementById('result-psychology');
-        // ------------------------------------
-
-        // --- 2. Состояние Приложения ---
+   
         let currentWizardStep = 0;
         let currentScanTarget = 'skin'; 
         const scanTargets = [
@@ -247,7 +234,7 @@
         const collectedColors = { skin: null, hair: null, eyes: null };
         let stream = null; 
 
-        // --- 3. Навигация по "Мастеру" ---
+ 
         function goToStep(stepNumber) {
             allSteps.forEach(step => step.classList.remove('active'));
             const nextStep = wizardContainer.querySelector(`.wizard-step[data-step="${stepNumber}"]`);
@@ -257,7 +244,7 @@
             }
         }
 
-        // --- 4. Логика Камеры ---
+
         async function startCamera() {
             try {
                 if (stream) { stream.getTracks().forEach(track => track.stop()); }
@@ -275,8 +262,6 @@
              if (stream) { stream.getTracks().forEach(track => track.stop()); stream = null; }
         }
 
-        // --- 5. Логика Сканирования Цвета ---
-        // (Функции scanColor, getAverageColor, rgbToHex без изменений)
         function scanColor() {
             video.pause();
             canvas.width = video.videoWidth;
@@ -300,9 +285,7 @@
         function rgbToHex(r, g, b) {
             return [r, g, b].map(x => { const hex = x.toString(16); return hex.length === 1 ? '0' + hex : hex; }).join('');
         }
-        
-        // --- 6. Логика Верификации ---
-        // (Функции confirmColor, updateScannerUI без изменений)
+
         function confirmColor(hexColor) {
             collectedColors[currentScanTarget] = hexColor;
             const currentTargetIndex = scanTargets.findIndex(t => t.id === currentScanTarget);
@@ -323,8 +306,7 @@
             stepInstruction.textContent = target.instruction;
         }
 
-        // --- 7. "Мозг": Расчет Результата ---
-        // (Функция calculateResult без изменений, включая всю психологию)
+
         function calculateResult() {
             function hexToRgb(hex) {
                 let r = 0, g = 0, b = 0;
@@ -368,7 +350,7 @@
                     avoidColors = ['#0000FF', '#FF00FF', '#E0FFFF'];
                     psychologyText = `<h4>Психология вашей палитры: Теплота и Надежность</h4><p>Ваши глубокие, богатые и землистые оттенки (как оливковый, терракотовый и шоколадный) излучают <strong>комфорт, стабильность и утонченность</strong>.</p><ul><li><strong>Хотите вызвать доверие?</strong> Используйте глубокий зеленый или теплый бежевый.</li><li><strong>Для уютной встречи:</strong> Ваши цвета делают вас невероятно притягательным и "своим". Они говорят: "На меня можно положиться".</li></ul>`;
                 }
-            } else { // tone === 'cool'
+            } else { 
                 if (contrast === 'high') {
                     resultType = '❄️ Зима';
                     bestColors = ['#000000', '#FFFFFF', '#1E90FF', '#DC143C', '#FF00FF'];
@@ -401,7 +383,6 @@
             populatePalette('avoid-palette', avoidColors);
         }
 
-        // --- 8. Слушатели Событий ---
         
         startBtn.addEventListener('click', () => {
             currentScanTarget = 'skin';
@@ -420,11 +401,11 @@
             collectedColors.skin = null;
             collectedColors.hair = null;
             collectedColors.eyes = null;
-            // infoPanel.classList.remove('visible'); // ИЗМЕНЕНО: Эта строка больше не нужна
+            
             goToStep(0);
         });
         
-        // --- ИЗМЕНЕНО: Слушатель для кнопки инфо-панели УДАЛЕН ---
+   
         
     </script>
 </body>
